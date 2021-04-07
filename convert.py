@@ -1,5 +1,6 @@
 import pandas as pd
 from docx import Document
+from docx.enum.text import WD_COLOR_INDEX
 from modules.tools import convert_character, convert_eng_character
 
 folder = "data/"
@@ -15,6 +16,7 @@ for i, paragraph in enumerate(document.paragraphs):
   paragraph.text = convert_character(paragraph.text)
   paragraph.text = convert_eng_character(paragraph.text)
   if original_text != paragraph.text:
+    paragraph.runs[0].font.highlight_color = WD_COLOR_INDEX.YELLOW
     diff_originals.append(original_text)
     diff_covnerts.append(paragraph.text)
     diff_indices.append(i)
