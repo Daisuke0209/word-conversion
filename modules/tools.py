@@ -62,6 +62,9 @@ def convert_eng_character(text : str):
     output : str
         converted text
     """
-    output = text.translate(str.maketrans({chr(0x0021 + i): chr(0xFF01 + i) for i in range(94)}))
+    #Upper English character
+    output = text.translate(str.maketrans({chr(0x0041 + i): chr(0xFF21 + i) for i in range(26)}))
+    #Lower English character
+    output = output.translate(str.maketrans({chr(0x0061 + i): chr(0xFF41 + i) for i in range(26)}))
 
     return output
