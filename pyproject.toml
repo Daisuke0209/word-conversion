@@ -8,6 +8,7 @@ authors = ["Daisuke Takahashi <stumble.on.the.stair@gmail.com>"]
 python = "^3.8"
 python-docx = "^0.8.10"
 pandas = "^1.2.3"
+pytest = "^6.2.3"
 
 [tool.poetry.dev-dependencies]
 
