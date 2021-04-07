@@ -1,15 +1,26 @@
+import pandas as pd
 from docx import Document
 from modules.tools import convert_character, convert_eng_character
 
 folder = "data/"
 filename = "test.docx"
 output_filename = filename.split('.')[0] + "-converted.docx"
+diff_filename = filename.split('.')[0] + "-diff.csv"
 
 document = Document(folder + filename)
 
-for i in document.paragraphs:
-  i.text = convert_character(i.text)
-  i.text = convert_eng_character(i.text)
+diff_originals, diff_covnerts, diff_indices = [], [], []
+for i, paragraph in enumerate(document.paragraphs):
+  original_text = paragraph.text
+  paragraph.text = convert_character(paragraph.text)
+  paragraph.text = convert_eng_character(paragraph.text)
+  if original_text != paragraph.text:
+    diff_originals.append(original_text)
+    diff_covnerts.append(paragraph.text)
+    diff_indices.append(i)
 
 document.save(folder + output_filename)
+df = pd.DataFrame([diff_indices, diff_originals, diff_covnerts]).T
+df.columns = ['index', 'original', 'converted']
+df.to_csv(folder + diff_filename, index = False)
 
