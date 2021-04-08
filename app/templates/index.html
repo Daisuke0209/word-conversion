@@ -12,10 +12,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 <body>
+    <header　class="light-blue darken-1">
+        <nav>
+            <div class="nav-wrapper">
+              <a href="" class="brand-logo">WORD Proofreading</a>
+              <ul id="nav-mobile" class="right hide-on-med-and-down">
+              </ul>
+            </div>
+        </nav>
+    </header>
     <form action="/data/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="uploadFile"/>
-        <input type="submit" value="submit"/>
+        <!-- <input type="file" name="uploadFile"/> -->
+        <div class="file-field input-field">
+            <div class="btn">
+                <span>File</span>
+                <input type="file"  name="uploadFile" id="file" onclick="clickBtn2()">
+            </div>
+            <div class="file-path-wrapper" onchange="clickBtn2()">
+                <input class="file-path validate" type="text" id="file_name">
+            </div>
+        </div>
+        <button class="btn waves-effect waves-light" type="submit" name="action" id="convert">Convert
+            <i class="material-icons right">send</i>
+        </button>
     </form>
+
+    <script>
+    //初期表示は非表示
+    document.getElementById("convert").style.visibility ="hidden";
+
+    function clickBtn2(){
+        const file_name = document.getElementById("file_name").value;
+        const convert = document.getElementById("convert");
+
+        if(file_name.indexOf('docx') == 5){
+            // hiddenで非表示
+            convert.style.visibility ="visible";
+        }else{
+            // visibleで表示
+            convert.style.visibility ="hidden";
+        }
+    }
+    </script>
 
     <!-- jQuery CDN -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
