@@ -7,7 +7,7 @@ from docx import Document
 from flask import Flask, render_template, request, make_response, jsonify
 from modules.tools import convert_docx
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 app.config['MAX_CONTENT_LENGTH'] = 1 * 1024 * 1024
 UPLOAD_DIR = "data"
 
