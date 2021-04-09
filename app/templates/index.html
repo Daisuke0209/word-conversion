@@ -21,7 +21,7 @@
             </div>
         </nav>
     </header>
-    <form action="/data/upload" method="post" enctype="multipart/form-data">
+    <form action="/upload" method="post" enctype="multipart/form-data">
         <!-- <input type="file" name="uploadFile"/> -->
         <div class="file-field input-field">
             <div class="btn">
@@ -32,6 +32,24 @@
                 <input class="file-path validate" type="text" id="file_name">
             </div>
         </div>
+        <label>Convert numbers</label>
+        <select class="browser-default" name="num">
+            <option disabled selected>Choose your option</option>
+            <option value=True selected>True</option>
+            <option value=False>False</option>
+        </select>
+        <label>Convert English characters</label>
+        <select class="browser-default" name="eng">
+            <option disabled selected>Choose your option</option>
+            <option value=True selected>True</option>
+            <option value=False>False</option>
+        </select>
+        <label>Highight</label>
+        <select class="browser-default" name="highlight">
+            <option disabled selected>Choose your option</option>
+            <option value=True>True</option>
+            <option value=False selected>False</option>
+        </select>
         <button class="btn waves-effect waves-light" type="submit" name="action" id="convert">Convert
             <i class="material-icons right">send</i>
         </button>

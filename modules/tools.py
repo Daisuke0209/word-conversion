@@ -72,7 +72,12 @@ def convert_eng_character(text : str):
 
     return output
 
-def convert_docx(document : Document):
+def convert_docx(
+    document : Document, 
+    use_num_convert : bool, 
+    use_eng_convert : bool,
+    use_highlight : bool
+    ):
     """
     Convert a word file.
 
@@ -80,6 +85,12 @@ def convert_docx(document : Document):
     ----------
     document : Document
         word file
+    use_num_convert : bool
+        flag to use number conversion(True:use, False:not use)
+    use_eng_convert : bool
+        flag to use english conversion(True:use, False:not use)
+    use_highlight : bool
+        flag to use hightligt the changes
     
     Returns
     ----------
@@ -91,10 +102,13 @@ def convert_docx(document : Document):
     diff_originals, diff_covnerts, diff_indices = [], [], []
     for i, paragraph in enumerate(document.paragraphs):
         original_text = paragraph.text
-        paragraph.text = convert_character(paragraph.text)
-        paragraph.text = convert_eng_character(paragraph.text)
+        if use_num_convert:
+            paragraph.text = convert_character(paragraph.text)
+        if use_eng_convert:
+            paragraph.text = convert_eng_character(paragraph.text)
         if original_text != paragraph.text:
-            paragraph.runs[0].font.highlight_color = WD_COLOR_INDEX.YELLOW
+            if use_highlight:
+                paragraph.runs[0].font.highlight_color = WD_COLOR_INDEX.YELLOW
             diff_originals.append(original_text)
             diff_covnerts.append(paragraph.text)
             diff_indices.append(i)

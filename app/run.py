@@ -15,9 +15,11 @@ UPLOAD_DIR = "data"
 def home():
     return render_template('index.html')
 
-@app.route('/data/upload', methods=['POST', 'GET'])
+@app.route('/upload', methods=['POST', 'GET'])
 def upload_multipart():
-
+    use_num_convert = eval(request.form.get('num'))
+    use_eng_convert = eval(request.form.get('eng'))
+    use_highlight = eval(request.form.get('highlight'))
     # ★ポイント3
     if 'uploadFile' not in request.files:
         make_response(jsonify({'result':'uploadFile is required.'}))
@@ -28,13 +30,17 @@ def upload_multipart():
         make_response(jsonify({'result':'filename must not empty.'}))
 
     # ★ポイント4
-    saveFileName = datetime.now().strftime("%Y%m%d_%H%M%S_") \
-        + werkzeug.utils.secure_filename(fileName)
+    saveFileName = 'converted.docx'
     file.save(os.path.join(UPLOAD_DIR, saveFileName))
 
     #convert
     document = Document(os.path.join(UPLOAD_DIR, saveFileName))
-    document, df = convert_docx(document)
+    document, df = convert_docx(
+                            document,
+                            use_num_convert = use_num_convert,
+                            use_eng_convert = use_eng_convert,
+                            use_highlight = use_highlight                 
+                        )
     document.save(os.path.join(UPLOAD_DIR, saveFileName))
 
     response = make_response()
