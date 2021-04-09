@@ -27,7 +27,6 @@
         <div class="raw">
             <div class="col s6">
                 <form action="/upload" method="post" enctype="multipart/form-data">
-                    <!-- <input type="file" name="uploadFile"/> -->
                     <div class="file-field input-field">
                         <div class="btn">
                             <span>File</span>
@@ -55,7 +54,7 @@
                         <option value=True>True</option>
                         <option value=False selected>False</option>
                     </select>
-                    <button class="btn waves-effect waves-light" type="submit" name="action" id="convert">Download
+                    <button class="btn waves-effect waves-light" type="submit" name="action" id="convert" disabled>Download
                         <i class="material-icons right">send</i>
                     </button>
                 </form>
@@ -64,19 +63,14 @@
     </div>
 
     <script>
-    //初期表示は非表示
-    document.getElementById("convert").style.visibility ="hidden";
-
     function clickBtn2(){
         const file_name = document.getElementById("file_name").value;
         const convert = document.getElementById("convert");
 
-        if(file_name.indexOf('docx') == 5){
-            // hiddenで非表示
-            convert.style.visibility ="visible";
+        if(file_name.indexOf('docx') != -1){
+            convert.disabled = false;
         }else{
-            // visibleで表示
-            convert.style.visibility ="hidden";
+            convert.disabled = true;
         }
     }
     </script>
