@@ -5,11 +5,12 @@ from datetime import datetime
 import werkzeug
 from docx import Document
 from flask import Flask, render_template, request, make_response, jsonify
-from modules.tools import convert_docx
+from modules.tools import convert_docx, save_as_html
 
 app = Flask(__name__, static_folder='static')
 app.config['MAX_CONTENT_LENGTH'] = 1 * 1024 * 1024
 UPLOAD_DIR = "data"
+STATIC_DIR = "app/static"
 
 @app.route('/')
 def home():
@@ -20,7 +21,7 @@ def upload_multipart():
     use_num_convert = eval(request.form.get('num'))
     use_eng_convert = eval(request.form.get('eng'))
     use_highlight = eval(request.form.get('highlight'))
-    # ★ポイント3
+
     if 'uploadFile' not in request.files:
         make_response(jsonify({'result':'uploadFile is required.'}))
 
@@ -29,27 +30,30 @@ def upload_multipart():
     if '' == fileName:
         make_response(jsonify({'result':'filename must not empty.'}))
 
-    # ★ポイント4
-    saveFileName = 'converted.docx'
-    file.save(os.path.join(UPLOAD_DIR, saveFileName))
+    orginal = 'original.docx'
+    file.save(os.path.join(UPLOAD_DIR, orginal))
+    save_as_html(os.path.join(UPLOAD_DIR, orginal), 'app/static/')
 
     #convert
-    document = Document(os.path.join(UPLOAD_DIR, saveFileName))
+    converted = 'converted.docx'
+    document = Document(os.path.join(UPLOAD_DIR, orginal))
     document, df = convert_docx(
                             document,
                             use_num_convert = use_num_convert,
                             use_eng_convert = use_eng_convert,
                             use_highlight = use_highlight                 
                         )
-    document.save(os.path.join(UPLOAD_DIR, saveFileName))
+    document.save(os.path.join(UPLOAD_DIR, converted))
+
+    #save as html
+    save_as_html(os.path.join(UPLOAD_DIR, converted), 'app/static/')
 
     response = make_response()
 
-    # ★ポイント2
-    response.data = open(os.path.join(UPLOAD_DIR, saveFileName), "rb").read()
+    response.data = open(os.path.join(UPLOAD_DIR, converted), "rb").read()
 
     # ★ポイント3
-    downloadFileName = os.path.join(UPLOAD_DIR, saveFileName)  
+    downloadFileName = os.path.join(UPLOAD_DIR, converted)  
     response.headers['Content-Disposition'] = 'attachment; filename=' + downloadFileName
 
     # ★ポイント4

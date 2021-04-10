@@ -1,7 +1,10 @@
+import os
 import re
 import pandas as pd
 from docx import Document
 from docx.enum.text import WD_COLOR_INDEX
+import mammoth
+from bs4 import BeautifulSoup
 
 def convert_character(text : str):
     """
@@ -117,3 +120,26 @@ def convert_docx(
     df.columns = ['index', 'original', 'converted']
 
     return document, df
+
+def save_as_html(docx_file : str, save_dir : str):
+    """
+    Save a docx file as html
+
+    Parameters
+    ----------
+    docx_file : str
+        path to docx file (e.g. "data/test.docx")
+    save_dir : str
+        save directory (e.g. app/static/)
+    """
+
+    with open(docx_file, "rb") as f:
+        result = mammoth.convert_to_html(f)
+        html = result.value
+
+    html = BeautifulSoup(html, 'lxml')
+    html = html.prettify()
+
+    outputfile = save_dir + os.path.basename(docx_file).replace('.docx','.html')
+    with open(outputfile, mode='w') as f:
+        f.write(html)
